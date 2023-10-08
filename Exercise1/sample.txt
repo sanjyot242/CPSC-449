@@ -1,0 +1,167 @@
+import json
+import requests
+
+url = "http://localhost:8000/api/tables/"
+
+trackName = [];
+albumNames = [];
+artistNames = [];
+
+
+artistsIds=[];
+Albumids = [];
+
+#Helper Functions 
+
+def  getArtistId(Name):
+    payload  = {'_filters': f'Name__eq:{Name}'}
+    res =  requests.get(f'{url}/artists/rows/',params=payload)
+    artist_id = res.json()["data"][0]["ArtistId"]
+    print(f'The Artist Id associated with {Name} is {artist_id}')
+    return artist_id
+   
+def getGenreIdsByAlbumIds(albumIds):
+    payload = {'_filters':f'AlbumId:[{albumIds}]','_limit':300}
+    res = requests.get(f'{url}/tracks/rows/',params=payload)
+    distinct_genre_ids = set()
+
+    # Extract and store distinct GenreIds in the set
+    for item in res.json()['data']:
+        distinct_genre_ids.add(item['GenreId'])
+
+    # Convert the set to a list if needed
+    distinct_genre_ids_list = list(distinct_genre_ids)
+    distinct_genre_ids = ",".join(map(str, distinct_genre_ids_list))
+    return distinct_genre_ids
+
+def getGenreByIds(genreIds):
+    payload = {'_filters':f'GenreId:[{genreIds}]'}
+    res = requests.get(f'{url}/genres/rows/',params=payload)
+    genreNames = []
+    for item in res.json()['data']:
+        genreNames.append(item['Name'])
+    result = ",".join(map(str, genreNames))
+    return result
+
+def getPlaylistIdsByName(Name):
+    payload = {'_filters':f'Name__eq:{Name}'}
+    res =  requests.get(f'{url}/playlists/rows/',params=payload)
+    return res.json()['data'][0]['PlaylistId']
+
+def getTrackIdByPlaylistId(playlistId):
+    payload = {'_filters':f'PlaylistId:{playlistId}','_limit':20}
+    res =  requests.get(f'{url}/playlist_track/rows/',params=payload)
+    track_ids = [str(item["TrackId"]) for item in res.json()["data"]]
+    # Join the TrackIds into a single comma-separated string
+    listOfTrackIds = ",".join(track_ids)
+    return listOfTrackIds
+
+
+def getTrackNameByTrackIds(trackids):
+    payload = {'_filters':f'TrackId:[{trackids}]','_schema':'Name,AlbumId','_limit':25}
+    res =  requests.get(f'{url}/tracks/rows/',params=payload)
+    for item in res.json()['data']:
+        trackName.append(item['Name'])
+        Albumids.append(item['AlbumId'])
+    return trackName
+
+def getArtistsIdsByAlbumIds(Albumids):
+    AlbumIdslist = ",".join(map(str, Albumids))
+    payload = {'_filters':f'AlbumId:[{AlbumIdslist}]'}
+    res =  requests.get(f'{url}/albums/rows/',params=payload)
+
+    for album_id in Albumids:
+        albumData = next((album for album in res.json()['data'] if album['AlbumId']  == album_id), None)
+        
+        if albumData:
+            albumNames.append(albumData['Title'])
+            artistsIds.append(albumData['ArtistId'])
+        else:
+            # Handle the case when no matching AlbumId is found
+            print(f"AlbumId {album_id} not found in the response.")
+
+    #print(albumNames) #Array of Album Names 
+    #print(artistsIds)
+
+def getArtistsNamesByArtistsIds(artistsIds):
+    ArtistsIdsList = ",".join(map(str, artistsIds))
+    payload = {'_filters':f'ArtistId:[{ArtistsIdsList}]'}
+    res =  requests.get(f'{url}/artists/rows/',params=payload)
+    for artist_id in artistsIds:
+        artistData = next((artist for artist in res.json()['data'] if artist['ArtistId'] == artist_id), None)
+
+        if artistData:
+            artistNames.append(artistData['Name'])
+        else:
+            print(f"AlbumId {artist_id} not found in the response.")
+    
+        
+    #print(artistNames)
+
+#Calling Queries 
+def getAlbumsByArtists(Name):
+    print("##############                Executing Query 1 Red Hot Chili Peppers          ##################################")
+    id = getArtistId(Name)
+    payload  = {'_filters': f'Artistid__eq:{id}','_schema':'Title'}
+    res = requests.get(f'{url}/albums/rows/',params=payload)
+    for item in res.json()['data']:
+        print(item['Title'])
+
+#Query 2 
+def getGenresByName(Name):
+    print("##############                Executing Query 2 Genres associated with the artist U2.          ##################################")
+    id = getArtistId(Name)
+    payload = {'_filters':f'Artistid__eq:{id}','_schema':'Albumid','_limit':110}
+    res = requests.get(f'{url}/albums/rows/',params=payload)
+    album_ids = []
+    # Extract and store the AlbumIds in the list
+    for item in res.json()['data']:
+        album_ids.append(item['AlbumId'])
+
+    result = ",".join(map(str, album_ids))
+    #calling helper to get genreIds
+    dist_genre_ids = getGenreIdsByAlbumIds(result)
+    #print(dist_genre_ids)
+    print(f'Genre associted with {Name} are '+ getGenreByIds(dist_genre_ids))
+
+#Query3
+def getTracksArtistsAlbumsByPlayList(Name):
+    print("################  Executing Query 3 Names of tracks on the playlist Grunge and their associated artists and albums. #################")
+    playlistid = getPlaylistIdsByName(Name)
+    trackIds = getTrackIdByPlaylistId(playlistid)
+
+    TrackNames = getTrackNameByTrackIds(trackIds) #array of track names 
+   
+    getArtistsIdsByAlbumIds(Albumids)
+    getArtistsNamesByArtistsIds(artistsIds) # array of Artists
+
+    #formatting resposne  ---- conver in fucntion later 
+    combined_data = []
+
+    # Loop through the arrays and combine the data
+    for i in range(len(TrackNames)):
+        entry = {
+            "trackName": trackName[i],
+            "ArtistName": artistNames[i],
+            "Album Name": albumNames[i]
+        }
+        combined_data.append(entry)
+
+    json_output = json.dumps(combined_data, indent=4)
+
+    # Print the JSON-formatted data
+    print(json_output)
+    
+
+
+
+#Query 1 
+getAlbumsByArtists("Red Hot Chili Peppers")
+
+#Query 2 Genres associated with the artist U2.
+getGenresByName("U2")
+
+#Query 3 Names of tracks on the playlist Grunge and their associated artists and albums.
+getTracksArtistsAlbumsByPlayList("Grunge")
+
+
