@@ -1,0 +1,12 @@
+fuse:
+  # Required. This is the mount directory that applications will
+  # use to access their SQLite databases.
+  dir: "/litefs"
+
+  # Enable mounting of the file system by non-root users.
+  # You must enable the 'user_allow_other' option in /etc/fuse.conf as well.
+  allow-other: false
+
+  # The debug flag enables debug logging of all FUSE API calls.
+  # This will produce a lot of logging. Not for general use.
+  debug: false
