@@ -1,1 +1,0 @@
-api: gunicorn --access-logfile - --capture-output --config=python:counter counter:__hug_wsgi__
