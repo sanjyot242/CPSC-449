@@ -2,7 +2,7 @@
     "$schema": "https://www.krakend.io/schema/v2.4/krakend.json",
     "version": 3,
     "endpoints": [{
-      "endpoint": "/api/books",
+      "endpoint": "/api/books/",
       "method": "GET",
       "backend": [
         {
@@ -15,7 +15,7 @@
       ]
     },
     {
-        "endpoint": "/api/books",
+        "endpoint": "/api/books/",
         "method": "POST",
         "backend": [
           {

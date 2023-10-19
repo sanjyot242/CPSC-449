@@ -1,2 +1,4 @@
-api: uvicorn --port $PORT api:app --reload
+#api: uvicorn --port $PORT api:app --reload remove this and create two new process for primary and secondry replica 
+primary: bin/litefs mount -config etc/primary.yml
+secondary: bin/litefs mount -config etc/secondary.yml
 worker: echo ./etc/krakend.json | entr -nrz krakend run --config etc/krakend.json --port $PORT 

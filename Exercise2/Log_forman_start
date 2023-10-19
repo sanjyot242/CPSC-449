@@ -1,0 +1,60 @@
+(.venv) sanjyot@sanjyot-GL62M-7RDX:~/CPSC-449/CPSC-449/Exercise2/fastapi/api$ sudo foreman start
+19:42:02 primary.1   | started with pid 5678
+19:42:02 secondary.1 | started with pid 5679
+19:42:02 worker.1    | started with pid 5684
+19:42:02 primary.1   | LiteFS v0.5.6, commit=672c7eabb316e036bdf5f0bdbbcadbe953b00b4c
+19:42:02 primary.1   | level=INFO msg="no backup client configured, skipping"
+19:42:02 primary.1   | level=INFO msg="Using static primary: primary=true hostname=localhost advertise-url=http://localhost:20202"
+19:42:02 primary.1   | level=INFO msg="using existing cluster id: \"LFSCA30521D4B9120C40\""
+19:42:02 primary.1   | level=INFO msg="9C16B77F9E7C07A8: primary lease acquired, advertising as http://localhost:20202"
+19:42:02 primary.1   | level=INFO msg="set cluster id on \"static\" lease \"LFSCA30521D4B9120C40\""
+19:42:02 secondary.1 | LiteFS v0.5.6, commit=672c7eabb316e036bdf5f0bdbbcadbe953b00b4c
+19:42:02 secondary.1 | level=INFO msg="no backup client configured, skipping"
+19:42:02 secondary.1 | level=INFO msg="Using static primary: primary=false hostname=localhost advertise-url=http://localhost:20202"
+19:42:02 secondary.1 | level=INFO msg="using existing cluster id: \"LFSCA30521D4B9120C40\""
+19:42:02 secondary.1 | level=INFO msg="D98415FD7C5F5E54: existing primary found (localhost), connecting as replica to \"http://localhost:20202\""
+19:42:02 primary.1   | level=INFO msg="LiteFS mounted to: /var/primary/fuse"
+19:42:02 primary.1   | level=INFO msg="http server listening on: http://localhost:20202"
+19:42:02 primary.1   | level=INFO msg="waiting to connect to cluster"
+19:42:02 primary.1   | level=INFO msg="connected to cluster, ready"
+19:42:02 primary.1   | level=INFO msg="no proxy target set, skipping proxy"
+19:42:02 primary.1   | level=INFO msg="starting background subprocess: /home/sanjyot/.venv/bin/uvicorn [--port 5000 api:app --reload]"
+19:42:02 primary.1   | level=INFO msg="9C16B77F9E7C07A8: stream connected (127.0.0.1:57270)"
+19:42:02 primary.1   | waiting for signal or subprocess to exit
+19:42:02 secondary.1 | level=INFO msg="LiteFS mounted to: /var/secondary/fuse"
+19:42:02 secondary.1 | level=INFO msg="http server listening on: http://localhost:20203"
+19:42:02 secondary.1 | level=INFO msg="waiting to connect to cluster"
+19:42:02 secondary.1 | level=INFO msg="connected to cluster, ready"
+19:42:02 secondary.1 | level=INFO msg="no proxy target set, skipping proxy"
+19:42:02 secondary.1 | waiting for signal or subprocess to exit
+19:42:02 worker.1    | Parsing configuration file: etc/krakend.json
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND INFO: Starting KrakenD v2.4.3
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND INFO: Starting the KrakenD instance
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books] Building the proxy pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [BACKEND: /books/] Building the backend pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books] Building the http handler
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books][JWTSigner] Signer disabled
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND INFO: [ENDPOINT: /api/books][JWTValidator] Validator disabled for this endpoint
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books] Building the proxy pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [BACKEND: /books/] Building the backend pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books] Building the http handler
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books][JWTSigner] Signer disabled
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND INFO: [ENDPOINT: /api/books][JWTValidator] Validator disabled for this endpoint
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books/:id] Building the proxy pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [BACKEND: /books/{{.Id}}] Building the backend pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books/:id] Building the http handler
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/books/:id][JWTSigner] Signer disabled
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND INFO: [ENDPOINT: /api/books/:id][JWTValidator] Validator disabled for this endpoint
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/search] Building the proxy pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [BACKEND: /search] Building the backend pipe
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/search] Building the http handler
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND DEBUG: [ENDPOINT: /api/search][JWTSigner] Signer disabled
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND INFO: [ENDPOINT: /api/search][JWTValidator] Validator disabled for this endpoint
+19:42:02 worker.1    | 2023/10/11 19:42:02 KRAKEND INFO: [SERVICE: Gin] Listening on port: 5200
+19:42:02 primary.1   | INFO:     Will watch for changes in these directories: ['/home/sanjyot/CPSC-449/CPSC-449/Exercise2/fastapi/api']
+19:42:02 primary.1   | INFO:     Uvicorn running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+19:42:02 primary.1   | INFO:     Started reloader process [5702] using WatchFiles
+19:42:03 primary.1   | INFO:     Started server process [5717]
+19:42:03 primary.1   | INFO:     Waiting for application startup.
+19:42:03 primary.1   | INFO:     Application startup complete.
+19:42:07 worker.1    | 2023/10/11 19:42:07 KRAKEND DEBUG: [SERVICE: Telemetry] Registering usage stats for Cluster ID vY1vJQKKgxNHJZsW8/O+yVqust3dhL/C6ERbjHqI4ek=
